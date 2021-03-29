@@ -10,8 +10,13 @@ export default function App() {
           <Text style={styles.timer}>00:00.00</Text>
         </View>
       </View>
-      <View>
-        <Text>Start</Text>
+      <View style={styles.buttonItem}>
+        <View style={styles.buttonLapCircle}>
+          <Text style={styles.buttonLapLabel}>Lap</Text>
+        </View>
+        <View style={styles.buttonStartCircle}>
+          <Text style={styles.buttonStartLabel}>Start</Text>
+        </View>
       </View>
       {/* eslint-disable-next-line */}
       <StatusBar style="light" />
@@ -23,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // 最後に黒にする
-    backgroundColor: 'green',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -38,10 +43,44 @@ const styles = StyleSheet.create({
   timer: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    fontSize: 90,
+    fontSize: 85,
     lineHeight: 100,
     fontWeight: '200',
     marginBottom: 80,
     width: '100%',
+  },
+  buttonItem: {
+    backgroundColor: 'black',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 110,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonLapCircle: {
+    backgroundColor: 'rgba(40,42,55,0.5)',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginLeft: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonStartCircle: {
+    backgroundColor: 'rgba(52,87,50,0.5)',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonLapLabel: {
+    color: '#83859F',
+    fontSize: 16,
+  },
+  buttonStartLabel: {
+    color: '#3AC219',
+    fontSize: 16,
   },
 });
