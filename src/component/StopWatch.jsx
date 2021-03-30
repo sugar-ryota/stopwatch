@@ -56,19 +56,25 @@ class StopWatch extends Component {
         underlayColor="gray"
         onPress={this.handleStartPress}
       >
-        <Text>{this.state.running ? 'Stop' : 'Start'}</Text>
+        <Text style={this.state.running ? styles.stopLabel : styles.startLabel}>
+          {this.state.running ? 'Stop' : 'Start'}
+        </Text>
       </TouchableHighlight>
     );
   }
 
   renderLapButton() {
+    // 変える
+    const style = this.state.running ? styles.resetButton : styles.lapButton;
     return (
       <TouchableHighlight
-        style={styles.button}
+        style={[styles.button, style]}
         underlayColor="gray"
         onPress={this.handleLapPress}
       >
-        <Text>Lap</Text>
+        <Text style={this.state.running ? styles.resetLabel : styles.lapLabel}>
+          Lap
+        </Text>
       </TouchableHighlight>
     );
   }
@@ -90,17 +96,17 @@ class StopWatch extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.timerWrapper}>
+        <View style={styles.timerHeader}>
+          <View>
             <Text style={styles.timer}>
               {formatTime(this.state.timeElapsed)}
             </Text>
           </View>
-          <View style={styles.buttonWrapper}>
-            {this.renderStartStopButton()}
-            {this.renderLapButton()}
-          </View>
         </View>
+          <View style={styles.buttonItem}>
+            {this.renderLapButton()}
+            {this.renderStartStopButton()}
+          </View>
 
         <View style={styles.footer}>
           {this.renderLaps()}
@@ -114,44 +120,73 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    // alignItems: 'stretch',
     backgroundColor: 'green',
     width: '100%',
+    justifyContent: 'flex-start',
   },
-  header: {
-    flex: 1,
+  timerHeader: {
+    backgroundColor: '#000000',
+    height: 375,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   footer: {
     flex: 1,
   },
-  timerWrapper: {
-    flex: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   timer: {
     fontSize: 60,
+    color: '#ffffff',
+    // eslint-disable-next-line no-dupe-keys
+    fontSize: 85,
+    lineHeight: 100,
+    fontWeight: '200',
+    marginBottom: 80,
   },
-  buttonWrapper: {
-    flex: 3,
+  buttonItem: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    height: 110,
+    backgroundColor: 'black',
   },
   button: {
-    borderWidth: 2,
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
   startButton: {
-    borderColor: '#00CC00',
+    backgroundColor: 'rgba(52,87,50,0.5)',
+    marginRight: 20,
+  },
+  startLabel: {
+    color: '#3AC219',
+    fontSize: 16,
   },
   stopButton: {
-    borderColor: '#CC0000',
+    backgroundColor: 'rgba(108,3,19,0.5)',
+    marginRight: 20,
+  },
+  stopLabel: {
+    color: '#C70E2A',
+    fontSize: 16,
+  },
+  lapButton: {
+    backgroundColor: 'rgba(40,42,55,0.5)',
+    marginLeft: 20,
+  },
+  lapLabel: {
+    color: '#83859F',
+    fontSize: 16,
+  },
+  resetButton: {
+    backgroundColor: '#212121',
+    marginLeft: 20,
+  },
+  resetLabel: {
+    color: '#E0E0E0',
+    fontSize: 16,
   },
   lap: {
     justifyContent: 'space-around',
