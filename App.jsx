@@ -1,23 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, View,
+} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import StopWatch from './src/component/StopWatch';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.timerHeader}>
+      {/* <View style={styles.timerHeader}>
         <View>
           <Text style={styles.timer}>00:00.00</Text>
         </View>
       </View>
       <View style={styles.buttonItem}>
-        <View style={styles.buttonLapCircle}>
-          <Text style={styles.buttonLapLabel}>Lap</Text>
-        </View>
-        <View style={styles.buttonStartCircle}>
-          <Text style={styles.buttonStartLabel}>Start</Text>
-        </View>
-      </View>
+        <LapButton />
+        <StartButton />
+      </View> */}
+      <StopWatch />
       {/* eslint-disable-next-line */}
       <StatusBar style="light" />
     </View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // 最後に黒にする
-    backgroundColor: '#000000',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -56,31 +56,5 @@ const styles = StyleSheet.create({
     height: 110,
     width: '100%',
     alignItems: 'center',
-  },
-  buttonLapCircle: {
-    backgroundColor: 'rgba(40,42,55,0.5)',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginLeft: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonStartCircle: {
-    backgroundColor: 'rgba(52,87,50,0.5)',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonLapLabel: {
-    color: '#83859F',
-    fontSize: 16,
-  },
-  buttonStartLabel: {
-    color: '#3AC219',
-    fontSize: 16,
   },
 });
