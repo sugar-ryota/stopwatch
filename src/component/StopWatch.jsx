@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, TouchableHighlight,
+  View, Text, StyleSheet, TouchableHighlight, Alert,
 } from 'react-native';
 import formatTime from 'minutes-seconds-milliseconds';
 
@@ -10,7 +10,7 @@ class StopWatch extends Component {
 
     this.state = {
       // 経過時間
-      timeElapsed: null,
+      timeElapsed: 0,
       // タイマーが動いているかどうか
       running: false,
       startTime: 0,
@@ -21,7 +21,7 @@ class StopWatch extends Component {
     this.handleStartPress = this.handleStartPress.bind(this);
     this.handleLapPress = this.handleLapPress.bind(this);
     this.handleStopPress = this.handleStopPress.bind(this);
-    this.handleResetPress = this.handleResetPress(this);
+    this.handleResetPress = this.handleResetPress.bind(this);
   }
 
   handleStartPress() {
@@ -56,12 +56,17 @@ class StopWatch extends Component {
   }
 
   handleResetPress() {
-
+    this.setState({
+      timeElapsed: 0,
+      startTime: 0,
+      stopTime: 0,
+      laps: [],
+      running: false,
+    });
   }
 
   renderStartStopButton() {
     const style = this.state.running ? styles.stopButton : styles.startButton;
-
     return (
       <TouchableHighlight
         style={[styles.button, style]}
@@ -75,17 +80,16 @@ class StopWatch extends Component {
     );
   }
 
-  renderLapButton() {
-    // 変える
-    const style = this.state.running ? styles.resetButton : styles.lapButton;
+  renderLapResetButton() {
+    const style = this.state.timeElapsed != 0 ? styles.lightGrayButton : styles.darkGrayButton;
     return (
       <TouchableHighlight
         style={[styles.button, style]}
         underlayColor="gray"
-        onPress={this.handleLapPress}
+        onPress={!this.state.running && this.state.timeElapsed != 0 ? this.handleResetPress : this.handleLapPress}
       >
-        <Text style={this.state.running ? styles.resetLabel : styles.lapLabel}>
-          {this.state.running ? 'Reset' : 'Lap'}
+        <Text style={this.state.timeElapsed != 0 ? styles.lightGrayLabel : styles.darkGrayLabel}>
+          {!this.state.running && this.state.timeElapsed != 0 ? 'Reset' : 'Lap'}
         </Text>
       </TouchableHighlight>
     );
@@ -116,7 +120,7 @@ class StopWatch extends Component {
           </View>
         </View>
           <View style={styles.buttonItem}>
-            {this.renderLapButton()}
+            {this.renderLapResetButton()}
             {this.renderStartStopButton()}
           </View>
 
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: '#000000',
     width: '100%',
     justifyContent: 'flex-start',
   },
@@ -184,20 +188,20 @@ const styles = StyleSheet.create({
     color: '#C70E2A',
     fontSize: 16,
   },
-  lapButton: {
-    backgroundColor: 'rgba(40,42,55,0.5)',
-    marginLeft: 20,
-  },
-  lapLabel: {
-    color: '#83859F',
-    fontSize: 16,
-  },
-  resetButton: {
+  lightGrayButton: {
     backgroundColor: '#212121',
     marginLeft: 20,
   },
-  resetLabel: {
+  darkGrayButton: {
+    backgroundColor: 'rgba(40,42,55,0.5)',
+    marginLeft: 20,
+  },
+  lightGrayLabel: {
     color: '#E0E0E0',
+    fontSize: 16,
+  },
+  darkGrayLabel: {
+    color: '#83859F',
     fontSize: 16,
   },
   lap: {
