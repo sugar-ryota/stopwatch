@@ -9,24 +9,23 @@ class StopWatch extends Component {
     super(props);
 
     this.state = {
+      // 経過時間
       timeElapsed: null,
+      // タイマーが動いているかどうか
       running: false,
-      startTime: null,
+      startTime: 0,
+      stopTime: 0,
       laps: [],
     };
-
+    // それぞれ作成した関数でthisを正しく認識するためbindしている
     this.handleStartPress = this.handleStartPress.bind(this);
     this.handleLapPress = this.handleLapPress.bind(this);
+    this.handleStopPress = this.handleStopPress.bind(this);
+    this.handleResetPress = this.handleResetPress(this);
   }
 
   handleStartPress() {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (this.state.running) {
-      clearInterval(this.interval);
-      this.setState({ running: false });
-      return;
-    }
-    this.setState({ startTime: new Date() });
+    this.setState({ startTime: new Date() - this.state.stopTime });
 
     this.interval = setInterval(() => {
       this.setState({
@@ -34,6 +33,15 @@ class StopWatch extends Component {
         running: true,
       });
     }, 30);
+  }
+
+  handleStopPress() {
+    // タイマーを止める
+    clearInterval(this.interval);
+    this.setState({
+      running: false,
+      stopTime: this.state.timeElapsed,
+    });
   }
 
   handleLapPress() {
@@ -47,6 +55,10 @@ class StopWatch extends Component {
     });
   }
 
+  handleResetPress() {
+
+  }
+
   renderStartStopButton() {
     const style = this.state.running ? styles.stopButton : styles.startButton;
 
@@ -54,7 +66,7 @@ class StopWatch extends Component {
       <TouchableHighlight
         style={[styles.button, style]}
         underlayColor="gray"
-        onPress={this.handleStartPress}
+        onPress={this.state.running ? this.handleStopPress : this.handleStartPress}
       >
         <Text style={this.state.running ? styles.stopLabel : styles.startLabel}>
           {this.state.running ? 'Stop' : 'Start'}
@@ -73,7 +85,7 @@ class StopWatch extends Component {
         onPress={this.handleLapPress}
       >
         <Text style={this.state.running ? styles.resetLabel : styles.lapLabel}>
-          Lap
+          {this.state.running ? 'Reset' : 'Lap'}
         </Text>
       </TouchableHighlight>
     );
@@ -194,6 +206,7 @@ const styles = StyleSheet.create({
   },
   lapText: {
     fontSize: 30,
+    color: '#E0E0E0',
   },
 });
 
