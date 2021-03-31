@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, TouchableHighlight, Alert,
+  View, Text, StyleSheet, TouchableHighlight, ScrollView,
 } from 'react-native';
 import formatTime from 'minutes-seconds-milliseconds';
 
@@ -47,9 +47,9 @@ class StopWatch extends Component {
   handleLapPress() {
     // eslint-disable-next-line react/destructuring-assignment
     const currentLapTime = this.state.timeElapsed;
-
     this.setState({
       startTime: new Date(),
+      // concatで配列の結合
       // eslint-disable-next-line react/destructuring-assignment
       laps: this.state.laps.concat([currentLapTime]),
     });
@@ -81,15 +81,16 @@ class StopWatch extends Component {
   }
 
   renderLapResetButton() {
-    const style = this.state.timeElapsed != 0 ? styles.lightGrayButton : styles.darkGrayButton;
+    const style = this.state.timeElapsed !== 0 ? styles.lightGrayButton : styles.darkGrayButton;
     return (
       <TouchableHighlight
         style={[styles.button, style]}
         underlayColor="gray"
-        onPress={!this.state.running && this.state.timeElapsed != 0 ? this.handleResetPress : this.handleLapPress}
+        // eslint-disable-next-line max-len
+        onPress={!this.state.running && this.state.timeElapsed !== 0 ? this.handleResetPress : this.handleLapPress}
       >
-        <Text style={this.state.timeElapsed != 0 ? styles.lightGrayLabel : styles.darkGrayLabel}>
-          {!this.state.running && this.state.timeElapsed != 0 ? 'Reset' : 'Lap'}
+        <Text style={this.state.timeElapsed !== 0 ? styles.lightGrayLabel : styles.darkGrayLabel}>
+          {!this.state.running && this.state.timeElapsed !== 0 ? 'Reset' : 'Lap'}
         </Text>
       </TouchableHighlight>
     );
@@ -101,7 +102,7 @@ class StopWatch extends Component {
         {this.state.laps.map((time, index) => (
           <View style={styles.lap} key={index}>
             {/* eslint-disable-next-line */}
-            <Text style={styles.lapText}>Lap #{index + 1}</Text>
+            <Text style={styles.lapText}>Lap {index + 1}</Text>
             <Text style={styles.lapText}>{formatTime(time)}</Text>
           </View>
         ))}
@@ -119,14 +120,13 @@ class StopWatch extends Component {
             </Text>
           </View>
         </View>
-          <View style={styles.buttonItem}>
-            {this.renderLapResetButton()}
-            {this.renderStartStopButton()}
-          </View>
-
-        <View style={styles.footer}>
-          {this.renderLaps()}
+        <View style={styles.buttonItem}>
+          {this.renderLapResetButton()}
+          {this.renderStartStopButton()}
         </View>
+        <ScrollView style={styles.footer}>
+          {this.renderLaps()}
+        </ScrollView>
       </View>
     );
   }
@@ -145,9 +145,6 @@ const styles = StyleSheet.create({
     height: 375,
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  footer: {
-    flex: 1,
   },
   timer: {
     fontSize: 60,
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   startButton: {
-    backgroundColor: 'rgba(52,87,50,0.5)',
+    backgroundColor: 'rgba(1,79,9,0.35)',
     marginRight: 20,
   },
   startLabel: {
@@ -181,7 +178,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   stopButton: {
-    backgroundColor: 'rgba(108,3,19,0.5)',
+    backgroundColor: 'rgba(108,3,19,0.35)',
     marginRight: 20,
   },
   stopLabel: {
@@ -205,12 +202,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   lap: {
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexDirection: 'row',
+    borderBottomColor: 'rgba(155,155,155,0.25)',
+    borderBottomWidth: 1,
+    height: 45,
+    alignItems: 'center',
   },
   lapText: {
-    fontSize: 30,
+    fontSize: 22,
     color: '#E0E0E0',
+  },
+  footer: {
+    flex: 1,
+    borderTopColor: 'rgba(155,155,155,0.25)',
+    borderTopWidth: 1,
+    marginLeft: 15,
+    marginRight: 15,
   },
 });
 
