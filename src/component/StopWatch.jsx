@@ -47,12 +47,20 @@ class StopWatch extends Component {
   handleLapPress() {
     // eslint-disable-next-line react/destructuring-assignment
     const currentLapTime = this.state.timeElapsed;
-    this.setState({
-      startTime: new Date(),
-      // concatで配列の結合
-      // eslint-disable-next-line react/destructuring-assignment
-      laps: this.state.laps.concat([currentLapTime]),
-    });
+    // 配列の最後を取得する
+    let end = 0;
+    if (currentLapTime !== 0) {
+      if (this.state.laps.length !== 0) {
+        end = this.state.laps[this.state.laps.length - 1];
+      }
+      // それぞれのlapの差をとっている
+      const difference = currentLapTime - end;
+      this.setState({
+        // concatで配列の結合
+        // eslint-disable-next-line react/destructuring-assignment
+        laps: this.state.laps.concat([difference]),
+      });
+    }
   }
 
   handleResetPress() {
